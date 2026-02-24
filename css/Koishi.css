@@ -1,0 +1,385 @@
+:root {
+  --color-bg: #d5ffd9;
+  --color-bg-secondary: #e8f5e9;
+  --color-primary: #5ff864;
+  --color-primary-light: #acfcbe;
+  --color-primary-dark: #25d029;
+  --color-float-bg: #f0f9f0;
+  --color-text-dark: #1a8c1d;
+  --color-text-medium: #2ea832;
+  --color-text-light: #49d03f;
+  --color-text-gray: #9cd09e;
+  --color-text-yellow: #80d030;
+  --color-gradient-start: #acfcbe;
+  --color-gradient-mid: #7df58e;
+  --color-gradient-end: #5ff864;
+  --color-white-transparent: rgba(255, 255, 255, 0.2);
+  --color-black-transparent: rgba(0, 0, 0, 0.1);
+  --shadow-light: 0px 5px 15px rgba(172, 252, 190, 0.6);
+  --shadow-medium: 0px 5px 20px rgba(37, 208, 41, 0.3);
+  --shadow-glow: 0px 0px 15px rgba(82, 244, 104, 0.9);
+  --shadow-primary: 0px 10px 30px rgba(95, 248, 100, 0.4);
+  --color-card-bg: #c4f5c8;
+  --color-card-hover: #c5f5c9;
+  --glow-primary: rgba(95, 248, 100, 0.5);
+  --glow-strong: rgba(95, 248, 100, 0.8);
+  --glow-extra: rgba(95, 248, 100, 0.9);
+}
+[data-theme="dark"] {
+  --color-bg: #0d1117;
+  --color-bg-secondary: #161b22;
+  --color-primary: #40c845;
+  --color-primary-light: #1a3a1c;
+  --color-primary-dark: #7cfc81;
+  --color-float-bg: #1a3a1c;
+  --color-text-dark: #ddf8e3;
+  --color-text-medium: #b1bac4;
+  --color-text-light: #cad9c9;
+  --color-text-gray: #8b9e8e;
+  --color-text-yellow: #c0e341;
+  --color-gradient-start: #1a3a1c;
+  --color-gradient-mid: #0d2818;
+  --color-gradient-end: #0a1f13;
+  --color-white-transparent: rgba(255, 255, 255, 0.08);
+  --color-black-transparent: rgba(0, 0, 0, 0.3);
+  --shadow-light: 0px 4px 15px rgba(0, 0, 0, 0.3);
+  --shadow-medium: 0px 5px 20px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 25px rgba(95, 248, 100, 0.4);
+  --shadow-primary: 0px 8px 32px rgba(95, 248, 100, 0.35);
+  --color-card-bg: #1a3a1c;
+  --color-card-hover: #234525;
+  --glow-primary: rgba(95, 248, 100, 0.6);
+  --glow-strong: rgba(95, 248, 100, 0.9);
+  --glow-extra: #5ff864;
+}
+.themeToggle {
+  position: fixed;
+  left: 20px;
+  top: 20px;
+  z-index: 1001;
+  cursor: pointer;
+}
+.themeToggle .toggleGlow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  border-radius: 30px;
+  background: var(--glow-primary);
+  filter: blur(15px);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: -1;
+}
+.themeToggle:hover .toggleGlow {
+  opacity: 0.6;
+}
+.themeToggle .toggleTrack {
+  position: relative;
+  width: 70px;
+  height: 35px;
+  border-radius: 35px;
+  background: linear-gradient(135deg, #87ebcb 0%, #00ff48 50%, #4dff35 100%);
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.2), 0 4px 15px rgba(0, 0, 0, 0.15);
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  overflow: hidden;
+}
+.themeToggle .toggleTrack::before {
+  content: '✦ ✧';
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  font-size: 8px;
+  color: transparent;
+  letter-spacing: 3px;
+  transition: all 0.5s ease;
+}
+.themeToggle .toggleTrack::after {
+  content: '☁';
+  position: absolute;
+  top: 6px;
+  right: 12px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.8);
+  transition: all 0.5s ease;
+}
+.themeToggle .toggleSun {
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.5s ease;
+  opacity: 1;
+}
+.themeToggle .toggleSun ion-icon {
+  font-size: 18px;
+  color: #51ff00;
+  filter: drop-shadow(0 0 5px rgba(102, 255, 0, 0.8));
+  animation: sunPulse 2s ease-in-out infinite;
+}
+.themeToggle .toggleMoon {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.5s ease;
+  opacity: 0.5;
+}
+.themeToggle .toggleMoon ion-icon {
+  font-size: 16px;
+  color: #c9d1d9;
+  filter: drop-shadow(0 0 3px rgba(200, 200, 255, 0.5));
+}
+.themeToggle .toggleThumb {
+  position: absolute;
+  left: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2), inset 0 -2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.themeToggle .toggleThumb::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.8);
+}
+.themeToggle .toggleThumb::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  box-shadow: 0 0 15px var(--glow-primary);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.themeToggle:hover .toggleThumb::after {
+  opacity: 1;
+}
+.themeToggle.dark .toggleTrack {
+  background: linear-gradient(135deg, #0d1117 0%, #1a1a3e 50%, #2d1b4e 100%);
+}
+.themeToggle.dark .toggleTrack::before {
+  color: rgba(255, 255, 255, 0.8);
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+.themeToggle.dark .toggleTrack::after {
+  opacity: 0;
+  transform: translateX(20px);
+}
+.themeToggle.dark .toggleSun {
+  opacity: 0.3;
+}
+.themeToggle.dark .toggleSun ion-icon {
+  animation: none;
+  color: #666;
+  filter: none;
+}
+.themeToggle.dark .toggleMoon {
+  opacity: 1;
+}
+.themeToggle.dark .toggleMoon ion-icon {
+  color: #ffeaa7;
+  filter: drop-shadow(0 0 8px rgba(255, 234, 167, 0.8));
+  animation: moonGlow 2s ease-in-out infinite;
+}
+.themeToggle.dark .toggleThumb {
+  left: calc(100% - 31px);
+  background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4), 0 0 20px rgba(95, 248, 100, 0.3);
+}
+.themeToggle.dark .toggleThumb::before {
+  background: rgba(255, 255, 255, 0.2);
+}
+.themeToggle.dark .toggleGlow {
+  background: rgba(95, 248, 100, 0.4);
+}
+@keyframes sunPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.8));
+  }
+  50% {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 10px #ffd700);
+  }
+}
+@keyframes moonGlow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 8px rgba(255, 234, 167, 0.6));
+  }
+  50% {
+    filter: drop-shadow(0 0 15px #ffeaa7);
+  }
+}
+@media (max-width: 768px) {
+  .themeToggle {
+    left: 10px;
+    top: 10px;
+  }
+  .themeToggle .toggleTrack {
+    width: 60px;
+    height: 30px;
+  }
+  .themeToggle .toggleThumb {
+    width: 22px;
+    height: 22px;
+  }
+  .themeToggle.dark .toggleThumb {
+    left: calc(100% - 26px);
+  }
+  .themeToggle .toggleSun ion-icon,
+  .themeToggle .toggleMoon ion-icon {
+    font-size: 14px;
+  }
+}
+body {
+  background-color: var(--color-bg);
+  transition: background-color 0.3s ease-in 0.2s;
+}
+.mystery-carousel {
+  position: relative;
+  width: 80vw;
+  height: 80vh;
+  margin: 60px auto;
+  overflow: hidden;
+  background: var(--color-primary-dark);
+  border-radius: 6px;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: all 0.3s ease-in 0.2s;
+}
+.carousel-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.carousel-vignette {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--color-gradient-start) 0%, var(--color-gradient-mid) 50%, var(--color-gradient-end) 100%);
+  overflow: hidden;
+  transition: background 0.3s ease-in 0.2s;
+}
+.photo-card {
+  position: absolute;
+  z-index: 10;
+  left: 50%;
+  top: 50%;
+  transform-origin: center center;
+  will-change: transform;
+  cursor: grab;
+  transition: box-shadow 0.2s ease;
+}
+.photo-card:active {
+  cursor: grabbing;
+}
+.photo-card .photo-frame {
+  padding: 14px;
+  padding-bottom: 36.4px;
+  background-color: var(--color-card-hover);
+  box-shadow: var(--shadow-primary);
+  border-radius: 2px;
+  position: relative;
+  transition: all 0.3s ease-in 0.2s;
+}
+.photo-card .photo-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 2px;
+  pointer-events: none;
+  background: linear-gradient(135deg, var(--color-card-hover) 0%, transparent 40%, transparent 60%, var(--color-card-hover) 100%);
+}
+.photo-card img {
+  display: block;
+  max-width: 380px;
+  max-height: 260px;
+  width: auto;
+  height: auto;
+  object-fit: cover;
+  border-radius: 1px;
+  filter: saturate(0.85) contrast(1.05);
+}
+.drag-hint {
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.drag-hint.active {
+  opacity: 1;
+}
+.drag-hint.hint-left,
+.drag-hint.hint-right {
+  top: 0;
+  bottom: 0;
+  width: 60px;
+}
+.drag-hint.hint-top,
+.drag-hint.hint-bottom {
+  left: 0;
+  right: 0;
+  height: 60px;
+}
+.drag-hint.hint-left {
+  left: 0;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.06), transparent);
+}
+.drag-hint.hint-right {
+  right: 0;
+  background: linear-gradient(to left, rgba(255, 255, 255, 0.06), transparent);
+}
+.drag-hint.hint-top {
+  top: 0;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.06), transparent);
+}
+.drag-hint.hint-bottom {
+  bottom: 0;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.06), transparent);
+}
+@media (max-width: 760px) {
+  .mystery-carousel {
+    width: 90vw;
+    height: 80vh;
+  }
+  .photo-card .photo-frame {
+    padding: 8px;
+    padding-bottom: 20px;
+  }
+  .photo-card img {
+    max-width: 60vw;
+    max-height: 40vw;
+  }
+}
