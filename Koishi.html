@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>古明地こいし</title>
+  <link rel="stylesheet" href="./css/Koishi.css">
+</head>
+<body>
+
+  <div class="mystery-carousel" id="mysteryCarousel">
+    <div class="carousel-stage" id="carouselStage">
+    </div>
+    <div class="carousel-vignette"></div>
+  </div>
+
+  <div class="themeToggle" id="themeToggle">
+    <div class="toggleTrack">
+      <div class="toggleSun">
+        <ion-icon name="sunny-outline"></ion-icon>
+      </div>
+      <div class="toggleMoon">
+        <ion-icon name="moon-outline"></ion-icon>
+      </div>
+      <div class="toggleThumb"></div>
+    </div>
+    <div class="toggleGlow"></div>
+  </div>
+
+<script src="./scripts/KoishiImageLoader.js"></script>
+<script src="./scripts/Koishi.js"></script>
+<script src="./scripts/themeToggle.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/ionicons@latest/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://cdn.jsdelivr.net/npm/ionicons@latest/dist/ionicons/ionicons.js"></script>
+<script>
+  const GITHUB_USER = "your-username";
+  const REPO_NAME   = "your-repo";
+  const BRANCH      = "main";          // 或 "master"
+  const CDN_BASE = `https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${REPO_NAME}@${BRANCH}/assets/images/Koishi/`;
+
+  const imageLoader = new PriorityImageLoader({
+    baseUrl: CDN_BASE,               // CDN 基础路径
+    concurrency: 4,                  // 同时加载4张图（可调）
+    retryTimes: 2,                    // 加载失败重试2次
+
+    onImageReady(url) {
+      console.log(`✅ 已加载: ${url}`);
+     },
+
+     // 某一组（small/medium/large）开始加载时
+    onGroupStart(groupName, count) {
+      console.log(`🚀 开始加载 ${groupName} 组 (${count}张)`);
+    },
+
+    // 某一组全部加载完成时
+    onGroupComplete(groupName, loadedImages) {
+      console.log(`🎉 ${groupName} 组加载完毕！`);
+      
+      // **关键**：当 small 组加载完毕后，初始化轮播！
+      if (groupName === 'small') {
+        // 用已加载的小图初始化轮播
+        const carousel = new MysteryCarousel('#mysteryCarousel', {
+          images: loadedImages,       // 传入已加载的小图数组
+          autoInterval: 2000,
+          stayDuration: 2000,
+          slideDuration: 800
+        });
+        console.log("🎠 轮播已启动！首批图片数量:", loadedImages.length);
+        
+        // 隐藏加载遮罩
+        document.getElementById('loadingOverlay').classList.add('hidden');
+      }
+    },
+
+    // 全部图片加载进度更新
+    onProgress({ loaded, total, percent }) {
+      // 更新进度条
+      document.getElementById('loadingBarFill').style.width = `${percent}%`;
+      document.querySelector('.loading-text').textContent = 
+        `加载中... ${percent}% (${loaded}/${total})`;
+    },
+    // 所有图片加载完毕
+    onAllComplete({ loaded, failed }) {
+      console.log(`✅ 全部加载完成！成功 ${loaded.length} 张，失败 ${failed.length} 张`);
+    },
+    // 加载错误处理
+    onError(type, err) {
+      console.error(`❌ 加载错误 [${type}]:`, err.message);
+    }
+  });
+  
+  // 1. 加载 manifest.json
+  imageLoader.loadManifest(CDN_BASE + 'manifest.json')
+    .then(() => {
+      // 2. 开始按优先级加载图片
+      return imageLoader.startLoading();
+    })
+    .catch(err => {
+      console.error("🚨 严重错误：", err);
+      alert("图片加载失败，请检查网络或仓库配置！");
+    });
+</script>
+</body>
+</html>
